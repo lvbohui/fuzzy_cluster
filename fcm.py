@@ -1,19 +1,23 @@
-from PIL import Image
-import numpy as np
 import random
+
 import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
+
 
 def init_center(data):
     x = random.randint(0,data.shape[0])
     y = random.randint(0,data.shape[1])
     tmp = data[x][y]
     return tmp
+
 def produce_center(K, data_size, data):
     a = np.ones((K,data_size))
     for k in range(K):
         center = init_center(data)
         a[k] = center
     return a
+
 def init_weight(K,data): # K: the number of cluster center
     weight = np.zeros((data.shape[0],data.shape[1],K), dtype = float, order = 'C')
     for i in range(data.shape[0]):
@@ -21,6 +25,7 @@ def init_weight(K,data): # K: the number of cluster center
             for k in range(K):
                 weight[i][j][k] = random.random()
     return weight
+
 def cal_weight(K,data,center,weight):
     p = 2
     distance = np.ones((data.shape[0], data.shape[1],K))
@@ -36,6 +41,7 @@ def cal_weight(K,data,center,weight):
             for k in range(K):
                 weight[i][j][k] = distance[i][j][k]/dist_sum[i][j]
     return weight
+
 def cal_center(data,weight,center):
     data_mul_weight = np.zeros((center.shape[0],1))
     weight_sum = np.zeros((1,center.shape[0]))
@@ -54,7 +60,6 @@ def cal_center(data,weight,center):
     return center
 # 对结果进行划分，对于同一类的像素点赋予相同的值
 def separation(data,weight,center):
-
     for i in range(weight.shape[0]):
         for j in range(weight.shape[1]):
             tmp = 0
@@ -64,6 +69,7 @@ def separation(data,weight,center):
                     tmp = weight[i][j][k]
                     label = k
             data[i][j] = center[label][0]
+
 # 基于熵的评价
 def e_value(weight,data2):
     index = 0
@@ -99,6 +105,7 @@ def e_value(weight,data2):
         hl += -(cnt[k]/np.sum(cnt))*np.log((cnt[k]/np.sum(cnt)))
     E = hr + hl
     return E
+
 # 区域间方差评价标准
 def DIR(data, weight):
     index = 0
@@ -124,6 +131,7 @@ def DIR(data, weight):
     mx = np.max(data)
     mn = np.min(data)
     return abs(mean_data[0]-mean_data[1])/(mx - mn) #
+
 #合成图 有监督正确率计算
 def cal_correct(tlabel, weight):
     row,column,K = weight.shape

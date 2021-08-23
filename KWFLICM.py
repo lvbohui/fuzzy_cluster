@@ -1,8 +1,9 @@
-from PIL import Image
-import numpy as np
-import random
-import matplotlib.pyplot as plt
 import math
+import random
+
+import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
 
 def init_weight(K):

@@ -1,7 +1,8 @@
-from PIL import Image
-import numpy as np
 import random
+
 import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
 
 # 初始化
